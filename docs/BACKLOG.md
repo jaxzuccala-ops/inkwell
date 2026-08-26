@@ -9,3 +9,5 @@ Definition of Done: see README.md
 | US-05 | As a reader, I want to comment on a post, so that I can engage with the author. | Medium | 3 | Backlog |
 | US-06 | As a reader, I want to follow an author, so that I see their new posts more prominently. | Medium | 3 | Backlog |
 | US-07 | As an author, I want to see basic analytics on my posts, so that I understand my audience. | Low | 5 | Backlog |
+| US-08 | As a reader, I want to have a following page, so that I can naviagate among the authors that I follow and edit my following status. | Medium | 3 | Backlog |
+| US-09 | As a registered user, I want to have a password reset option, so that I can recover my account or change my password for security purposes. | High | 3 | Backlog |
