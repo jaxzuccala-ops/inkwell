@@ -26,3 +26,17 @@ Errors:
 ## GET /api/posts?page=n
 
 Success: 200 { posts: PostPublic[], page: number, hasMore: boolean }
+
+
+## POST /api/posts/:id/comments
+
+Request: { user: UserPublic, text: string}
+
+Success: 201 { comment: CommentPublic, displayName: string, thread: ThreadPublic[] }
+
+Errors:
+400 NULL_COMMENT - "Comment must have text."
+
+400 LONG_COMMENT - "Comment exceeds maximum length."
+
+401 UNAUTHORIZED - "Authorization required."
