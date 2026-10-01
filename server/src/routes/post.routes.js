@@ -5,6 +5,7 @@
 // Same thin-route discipline as auth.routes.js: no businessrules here.
 import { Router } from "express";
 import { PostService } from "../services/post.service.js";
+import { StatsService } from "../services/stats.service.js";
 const router = Router();
 
 router.post("/posts", async (req, res) => {
@@ -43,6 +44,10 @@ router.get("/posts", async (req, res) => {
       });
 
   res.status(200).json(result);
+});
+
+router.get("/stats", (req, res) => {
+  res.status(200).json(StatsService.getStats());
 });
 
 export default router;
