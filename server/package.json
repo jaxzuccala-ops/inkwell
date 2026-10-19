@@ -3,14 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "description": "Inkwell API server",
-
   "engines": {
     "node": ">=22.0.0"
-    },
-  
+  },
   "main": "index.js",
   "scripts": {
-    "dev": "node --watch src/index.js"
+    "dev": "node --watch src/index.js",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
   },
   "keywords": [],
   "author": "",
@@ -31,5 +30,8 @@
   "allowScripts": {
     "prisma@6.19.3": true,
     "@prisma/engines@6.19.3": true
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
   }
 }
