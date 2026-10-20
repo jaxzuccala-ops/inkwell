@@ -61,3 +61,95 @@ test("publish() rejects an empty title", async () => {
     })
   ).rejects.toThrow();
 });
+
+test("publish() rejects an empty body", async () => {
+  await expect(
+    PostService.publish({
+      authorId: "u1",
+      title: "Hello",
+      body: "",
+    })
+  ).rejects.toThrow();
+});
+
+test("publish() includes tags in the emitted event", async () => {
+  mockPostRepository.createWithTags.mockResolvedValue({
+    id: "p1",
+    title: "Hello",
+    status: "PUBLISHED",
+  });
+
+  await PostService.publish({
+    authorId: "u1",
+    title: "Hello",
+    body: "World",
+    tagNames: ["design", "architecture"],
+  });
+
+  expect(mockEventBus.emit).toHaveBeenCalledWith(
+    "post.published",
+    expect.objectContaining({
+      tags: ["design", "architecture"],
+    })
+  );
+});
+
+test("publish() sends the authorId in the emitted event", async () => {
+  mockPostRepository.createWithTags.mockResolvedValue({
+    id: "p1",
+    title: "Hello",
+    status: "PUBLISHED",
+  });
+
+  await PostService.publish({
+    authorId: "u1",
+    title: "Hello",
+    body: "World",
+  });
+
+  expect(mockEventBus.emit).toHaveBeenCalledWith(
+    "post.published",
+    expect.objectContaining({
+      authorId: "u1",
+    })
+  );
+});
+
+test("publish() passes the correct data to PostRepository", async () => {
+  mockPostRepository.createWithTags.mockResolvedValue({
+    id: "p1",
+    title: "Hello",
+    status: "PUBLISHED",
+  });
+
+  await PostService.publish({
+    authorId: "u1",
+    title: "Hello",
+    body: "World",
+    tagNames: ["design"],
+  });
+
+  expect(mockPostRepository.createWithTags).toHaveBeenCalledWith(
+    expect.objectContaining({
+      authorId: "u1",
+      title: "Hello",
+      body: "World",
+      tagNames: ["design"],
+      status: "PUBLISHED",
+    })
+  );
+});
+
+test("publish() propagates repository errors", async () => {
+  mockPostRepository.createWithTags.mockRejectedValue(
+    new Error("Database unavailable")
+  );
+
+  await expect(
+    PostService.publish({
+      authorId: "u1",
+      title: "Hello",
+      body: "World",
+    })
+  ).rejects.toThrow("Database unavailable");
+});
