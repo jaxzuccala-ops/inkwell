@@ -1,6 +1,5 @@
 // server/src/repositories/user.repository.js
 //
-to
 // Per ADR-001 (Lecture 5), this is the ONLY module permitted
 // query the User table directly.
 import { prisma } from "../db/client.js";

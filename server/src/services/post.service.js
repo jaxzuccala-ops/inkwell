@@ -5,7 +5,8 @@ import { assertNonEmpty } from "../utils/validation.js";
 import { SubstringSearchStrategy } from "./search/substring-search.strategy.js";
 import { EventBus } from "../events/event-bus.js";
 
-const searchStrategy = SubstringSearchStrategy; // swap this line to change search behavior system-wide
+const searchStrategy = SubstringSearchStrategy;
+// swap this line to change search behavior system-wide
 
 export const PostService = {
   async publish({ authorId, title, body, tagNames = [] }) {
@@ -41,9 +42,6 @@ export const PostService = {
   },
 
   async search({ query, page = 1, pageSize = 10 }) {
-    return searchStrategy.search(query, {
-      page,
-      pageSize,
-    });
+    return searchStrategy.search(query, { page, pageSize });
   },
 };
