@@ -1,28 +1,28 @@
-// client/src/App.jsx
-//
-// in Lecture 5.
-// Defines Inkwell's information architecture (Section 5.1) as routes.
-// This file's only job is routing + layout — no business logic here,
-// the same "thin top layer" discipline we applied to server/src/index.js
-
-// Only the <main> element changes from Lecture 7 - full width on
-// mobile, a constrained, centered column from md: upward (Section 5.2).
-
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { NavBar } from "./components/NavBar";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Feed } from "./components/Feed";
-import { PostEditor } from "./components/PostEditor";
 import { LoginForm } from "./components/LoginForm";
+import { PostEditor } from "./components/PostEditor";
+
 export default function App() {
   return (
     <BrowserRouter>
-      <NavBar />
-    <main className="w-full px-4 py-6 md:max-w-2xl md:mx-auto md:px-6 md:py-8">
-      <Routes>
-        <Route path="/" element={<Feed />} />
-        <Route path="/write" element={<PostEditor />} />
-      </Routes>
-    </main>
+      <div className="min-h-screen bg-gray-50">
+        <header className="border-b bg-white">
+          <nav className="mx-auto max-w-4xl px-4 py-4 flex gap-4">
+            <Link to="/">Feed</Link>
+            <Link to="/login">Log In</Link>
+            <Link to="/write">Write</Link>
+          </nav>
+        </header>
+
+        <main className="mx-auto max-w-4xl px-4 py-6">
+          <Routes>
+            <Route path="/" element={<Feed />} />
+            <Route path="/login" element={<LoginForm />} />
+            <Route path="/write" element={<PostEditor />} />
+          </Routes>
+        </main>
+      </div>
     </BrowserRouter>
   );
 }
