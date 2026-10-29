@@ -109,3 +109,11 @@ test("register then login works end to end", async () => {
   expect(loginRes.body.accessToken).toBeDefined();
   expect(loginRes.body.user.email).toBe("bob@example.com");
 });
+
+test("oversized pageSize requests are clamped", async () => {
+  const res = await request(app)
+    .get("/api/posts?page=1&pageSize=10000");
+
+  expect(res.status).toBe(200);
+  expect(res.body.posts.length).toBeLessThanOrEqual(50);
+});
