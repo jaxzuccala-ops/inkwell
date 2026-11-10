@@ -64,4 +64,19 @@ export const PostRepository = {
       hasMore,
     };
   },
+
+  // server/src/repositories/post.repository.js — excerpt, added
+
+  findById(id) {
+    return prisma.post.findUnique({
+      where: { id },
+    });
+  },
+
+  deleteById(id) {
+    return prisma.post.delete({
+      where: { id },
+    });
+  },
+  
 };

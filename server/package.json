@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "test": "node --experimental-vm-modules --env-file=.env.test node_modules/.bin/jest"
+    "test": "node --experimental-vm-modules --env-file=.env.testnode_modules/.bin/jest --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +25,7 @@
     "init": "^0.1.2",
     "jsonwebtoken": "^9.0.3",
     "npx": "^3.0.0",
+    "pino": "^10.4.0",
     "postgresql": "^0.0.1",
     "prisma": "^6.19.3"
   },

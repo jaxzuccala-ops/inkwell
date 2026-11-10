@@ -2,6 +2,7 @@
 
 import { prisma } from "../db/client.js";
 import bcrypt from "bcrypt";
+import { TokenService } from "../services/token.service.js";
 
 let userCounter = 0;
 
@@ -14,8 +15,7 @@ export async function createTestUser({
   const resolvedEmail =
     email ?? `test-user-${userCounter}@example.com`;
 
-  const passwordHash = await bcrypt.hash(password, 4);
-  // low cost factor: tests don't need production security
+  const passwordHash = await bcrypt.hash(password, 4); // low cost factor: tests don't need production security
 
   return prisma.user.create({
     data: {
@@ -25,6 +25,22 @@ export async function createTestUser({
       isVerified: true,
     },
   });
+}
+
+export async function createTestPost({ authorId }) {
+  return prisma.post.create({
+    data: {
+      authorId,
+      title: "Fixture post",
+      body: "Fixture body",
+      status: "PUBLISHED",
+      publishedAt: new Date(),
+    },
+  });
+}
+
+export function tokenFor(user) {
+  return TokenService.issueTokens(user).accessToken;
 }
 
 export async function resetDatabase() {

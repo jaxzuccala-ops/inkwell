@@ -14,6 +14,34 @@ class InvalidCredentialsError extends Error {}
 const BCRYPT_COST_FACTOR = 10; // see Lecture 15 for the security tradeoff this number encodes
 const MIN_PASSWORD_LENGTH = 8;
 
+// server/src/services/auth.service.js
+
+import { logger } from "../lib/logger.js";
+
+export async function login({ email, password }) {
+  const user = await UserRepository.findByEmail(email);
+
+  if (
+    !user ||
+    !(await bcrypt.compare(password, user.passwordHash))
+  ) {
+    // fix: a structured, leveled, machine-parseable log
+    // line — searchable by "event" or "email" once aggregated,
+    // not just a free-form sentence buried in scrollback.
+
+    logger.warn(
+      {
+        event: "auth.login.failed",
+        email,
+      },
+      "Failed login attempt"
+    );
+
+    throw new InvalidCredentialsError();
+  }
+
+}
+
 export const AuthService = {
   async register({ email, displayName, password }) {
     assertNonEmpty(email, "email", "MISSING_EMAIL");
@@ -61,16 +89,17 @@ export const AuthService = {
   async login({ email, password }) {
     const user = await UserRepository.findByEmail(email);
 
-    if (!user) {
-      throw new InvalidCredentialsError();
-    }
+    if (
+      !user ||
+      !(await bcrypt.compare(password, user.passwordHash))
+    ) {
+      // A09's fix: a failed login attempt is now a recorded, visible
+      // event, not a silent failure only the requester ever sees.
 
-    const matches = await bcrypt.compare(
-      password,
-      user.passwordHash
-    );
+      console.warn(
+        `[SECURITY] Failed login attempt for email=${email} at ${new Date().toISOString()}`
+      );
 
-    if (!matches) {
       throw new InvalidCredentialsError();
     }
 
@@ -81,6 +110,7 @@ export const AuthService = {
       ...tokens,
     };
   },
+
 };
 
 export {

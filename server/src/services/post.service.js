@@ -44,4 +44,14 @@ export const PostService = {
   async search({ query, page = 1, pageSize = 10 }) {
     return searchStrategy.search(query, { page, pageSize });
   },
+
+  // server/src/services/post.service.js — excerpt, added (not shown above)
+
+  async getById(id) {
+    return PostRepository.findById(id);
+  },
+
+  async delete(id) {
+    return PostRepository.deleteById(id);
+  },
 };
