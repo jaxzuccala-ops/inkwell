@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "test": "node --experimental-vm-modules --env-file=.env.testnode_modules/.bin/jest --runInBand"
+    "test": "node --experimental-vm-modules --env-file=.env.test node_modules/.bin/jest --runInBand"
   },
   "keywords": [],
   "author": "",
